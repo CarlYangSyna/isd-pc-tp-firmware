@@ -4,7 +4,7 @@
                       COMPANY CONFIDENTIAL
                        INTERNAL USE ONLY
 
- Copyright (C) 1997 - 2015  Synaptics Incorporated.  All right reserved.
+ Copyright (C) 1997 - 2024  Synaptics Incorporated.  All right reserved.
 
  This document contains information that is proprietary to Synaptics
  Incorporated. The holder of this document shall treat all information
@@ -21,44 +21,37 @@
 ----------------------------------------------------------------- """
 
 import os
+import argparse
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import glob
 import pickle
 import numpy as np
 import tensorflow as tf
 
-def main():    
-    x_trn = []    
-    pickle_files = os.path.join("data", "*.pickle") 
-    fnames = glob.glob(pickle_files)
 
-    # Load data from pickle files as representative_dataset for full-integer quantization
-    for fname in fnames:
-        f = open(fname, 'rb')
-        x, y, a, t = pickle.load(f)
-        f.close()
-        x_trn.extend(x)
+def main(dataFolder, modelFolder):
+    converter = tf.lite.TFLiteConverter.from_saved_model(modelFolder)
     
-    def representative_dataset_generator():
-        count = 0
-        for value in x_trn:
-            value = value.astype(np.float32)
-
-            value = np.expand_dims(value, axis = 0)
-            value = np.expand_dims(value, axis = -1)
-            yield [value]
-            count += 1
-            if count > 10000:
-                break
-
-    # Convert the model to TFLite model using full-integer quantization
-    converter = tf.lite.TFLiteConverter.from_saved_model("best_model")     
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
-    converter.representative_dataset = representative_dataset_generator
-    tflite_model = converter.convert()   
+    converter.target_spec.supported_ops = [
+        tf.lite.OpsSet.TFLITE_BUILTINS,
+        tf.lite.OpsSet.SELECT_TF_OPS
+    ]
     
-    open("ACM_converted_full_integer_model.tflite", "wb").write(tflite_model)
-    print(f"TFLite model: model size = {len(tflite_model)}")    
+    converter.experimental_new_converter = True
+    converter.experimental_new_quantizer = True
+    
+    tflite_model = converter.convert()
+
+    open(os.path.join('best_model', 'ACM_converted_qat_int8_model.tflite'), "wb").write(tflite_model)
+    print(f"TFLite model: model size = {len(tflite_model)}")
+
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dataFolder', help='Path of data folder')
+    parser.add_argument('modelFolder', help='Path of best_model folder')
+
+    args = parser.parse_args()
+
+    main(args.dataFolder, args.modelFolder)
