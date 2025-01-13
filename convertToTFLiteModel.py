@@ -14,7 +14,7 @@
  without the written permission of Synaptics Incorporated.
 
  Synaptics Incorporated
- 1251 McKay Drive
+ 1109 McKay Drive
  San Jose, CA   95131
  (408) 454-5100
 
