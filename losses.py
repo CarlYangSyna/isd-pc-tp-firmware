@@ -4,7 +4,7 @@
                       COMPANY CONFIDENTIAL
                        INTERNAL USE ONLY
 
- Copyright (C) 1997 - 2015  Synaptics Incorporated.  All right reserved.
+ Copyright (C) 1997 - 2025  Synaptics Incorporated.  All right reserved.
 
  This document contains information that is proprietary to Synaptics
  Incorporated. The holder of this document shall treat all information
@@ -14,7 +14,7 @@
  without the written permission of Synaptics Incorporated.
 
  Synaptics Incorporated
- 1251 McKay Drive
+ 1109 McKay Drive
  San Jose, CA   95131
  (408) 454-5100
 
