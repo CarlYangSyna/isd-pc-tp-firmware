@@ -4,7 +4,7 @@
                       COMPANY CONFIDENTIAL
                        INTERNAL USE ONLY
 
- Copyright (C) 1997 - 2024  Synaptics Incorporated.  All right reserved.
+ Copyright (C) 1997 - 2025  Synaptics Incorporated.  All right reserved.
 
  This document contains information that is proprietary to Synaptics
  Incorporated. The holder of this document shall treat all information
